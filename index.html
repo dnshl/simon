@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simon says</title>
+    <script src="jquery-2.0.3.min.js"></script>
+    <script>
+      $(document).ready(function() {
+
+        function resize_board() {
+          var height = $(window).height();
+          var width  = $(window).width ();
+          var length = height < width ? height : width;
+
+          $('#board').css('height', length).css('width', length);
+        }
+
+        // resize event
+        $(window).on('resize', resize_board());
+      });
+    </script>
+    <style>
+      body {
+        background-color: #141414;
+        margin: 0;
+      }
+
+      #board {
+        background-color: pink;
+        height: 800px;
+        position: relative;
+        margin: 0 auto;
+        width: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="board">
+
+    </div>
+  </body>
+</html>
