@@ -9,9 +9,12 @@
         function resize_board() {
           var height = $(window).height();
           var width  = $(window).width ();
+
           var length = height < width ? height : width;
+          var field_length = length / 2 * 0.97;
 
           $('#board').css('height', length).css('width', length);
+          $('.field').css('height', field_length).css('width', field_length);
         }
 
         // resize event
@@ -25,17 +28,53 @@
       }
 
       #board {
-        background-color: pink;
         height: 800px;
         position: relative;
         margin: 0 auto;
         width: 800px;
       }
+
+      .field {
+        height: 390px;
+        position: absolute;
+        width: 390px;
+      }
+
+      .red {
+        background-color: #DF382C;
+        border-top-right-radius: 100%;
+        top: 0;
+        right: 0;
+      }
+
+      .green {
+        background-color: #38B44A;
+        border-bottom-right-radius: 100%;
+        bottom: 0;
+        right: 0;
+      }
+
+      .blue {
+        background-color: #19B6EE;
+        border-bottom-left-radius: 100%;
+        left: 0;
+        bottom: 0;
+      }
+
+      .yellow {
+        background-color: #ECA918;
+        border-top-left-radius: 100%;
+        top: 0;
+        left: 0;
+      }
     </style>
   </head>
   <body>
     <div id="board">
-
+      <div class="red field"></div>
+      <div class="green field"></div>
+      <div class="blue field"></div>
+      <div class="yellow field"></div>
     </div>
   </body>
 </html>
