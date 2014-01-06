@@ -12,9 +12,11 @@
 
           var length = height < width ? height : width;
           var field_length = length / 2 * 0.97;
+          var position = field_length * -1 / 2;
 
           $('#board').css('height', length).css('width', length);
-          $('.field').css('height', field_length).css('width', field_length);
+          $('.field, .controls').css('height', field_length).css('width', field_length);
+          $('.controls').css('margin-top', position).css('margin-left', position);
         }
 
         // resize event
@@ -67,6 +69,17 @@
         top: 0;
         left: 0;
       }
+
+      .controls {
+        background-color: #141414;
+        border-radius: 100%;
+        height: 390px;
+        width: 390px;
+        margin: -195px 0 0 -195px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+      }
     </style>
   </head>
   <body>
@@ -75,6 +88,7 @@
       <div class="green field"></div>
       <div class="blue field"></div>
       <div class="yellow field"></div>
+      <div class="controls"></div>
     </div>
   </body>
 </html>
