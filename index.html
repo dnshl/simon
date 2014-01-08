@@ -21,6 +21,18 @@
 
         // resize event
         $(window).on('resize', resize_board());
+
+        var field_toggle_class = 'clicked';
+
+        $('audio').on('playing', function() {
+          $(this).parent().toggleClass(field_toggle_class);
+        }).on('ended', function() {
+          $(this).parent().toggleClass(field_toggle_class);
+        });
+
+        $('.field').click(function() {
+          this.children[0].play();
+        });
       });
     </script>
     <style>
@@ -70,6 +82,23 @@
         left: 0;
       }
 
+      .red.clicked {
+        background: linear-gradient(45deg, hsl(4, 74%, 62%) 0%, hsl(4, 74%, 52%) 100%);
+        border: 5px inset hsl(4, 74%, 52%);
+      }
+      .green.clicked {
+        background: linear-gradient(135deg, hsl(129, 53%, 56%) 0%, hsl(129, 53%, 46%) 100%);
+        border: 5px inset hsl(129, 53%, 46%);
+      }
+      .blue.clicked {
+        background: linear-gradient(225deg, hsl(196, 86%, 62%) 0%, hsl(196, 86%, 52%) 100%);
+        border: 5px inset hsl(196, 86%, 52%);
+      }
+      .yellow.clicked {
+        background: linear-gradient(315deg, hsl(41, 85%, 61%) 0%, hsl(41, 85%, 51%) 100%);
+        border: 5px inset hsl(41, 85%, 51%);
+      }
+
       .controls {
         background-color: #141414;
         border-radius: 100%;
@@ -84,10 +113,26 @@
   </head>
   <body>
     <div id="board">
-      <div class="red field"></div>
-      <div class="green field"></div>
-      <div class="blue field"></div>
-      <div class="yellow field"></div>
+      <div class="red field">
+        <audio>
+          <source src="C.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+      <div class="green field">
+        <audio>
+          <source src="D.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+      <div class="blue field">
+        <audio>
+          <source src="E.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+      <div class="yellow field">
+        <audio>
+          <source src="G.mp3" type="audio/mpeg">
+        </audio>
+      </div>
       <div class="controls"></div>
     </div>
   </body>
