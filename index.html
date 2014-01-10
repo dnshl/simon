@@ -6,6 +6,10 @@
     <script>
       $(document).ready(function() {
 
+        var field_toggle_class = 'clicked';
+        var muted_toggle_class = 'muted';
+        var is_muted = false;
+
         function resize_board() {
           var height = $(window).height();
           var width  = $(window).width ();
@@ -13,16 +17,18 @@
           var length = height < width ? height : width;
           var field_length = length / 2 * 0.97;
           var position = field_length * -1 / 2;
+          var button_length = field_length / 3;
+          var button_position = button_length * -1 / 2;
 
           $('#board').css('height', length).css('width', length);
           $('.field, .controls').css('height', field_length).css('width', field_length);
           $('.controls').css('margin-top', position).css('margin-left', position);
+          $('.mute').css('height', button_length).css('width', button_length);
+          $('.mute').css('margin-top', button_position).css('margin-left', button_position);
         }
 
         // resize event
         $(window).on('resize', resize_board());
-
-        var field_toggle_class = 'clicked';
 
         $('audio').on('playing', function() {
           $(this).parent().toggleClass(field_toggle_class);
@@ -32,6 +38,18 @@
 
         $('.field').click(function() {
           this.children[0].play();
+        });
+
+        $('.mute').click(function() {
+          $(this).toggleClass(muted_toggle_class);
+          is_muted = !is_muted;
+
+          var audios = document.getElementsByTagName('audio');
+          for (var i = 0; i < audios.length; i++) {
+            audios[i].muted = is_muted;
+          }
+
+          return false;
         });
       });
     </script>
@@ -113,6 +131,23 @@
         top: 50%;
         left: 50%;
       }
+
+      .mute {
+        background-color: lightgrey;
+        border: 2px solid grey;
+        border-radius: 100%;
+
+        height: 130px;
+        width: 130px;
+        margin: -60px 0 0 -60px;
+        position: absolute;
+        top: 30%;
+        right: 15%;
+      }
+
+      .muted {
+        background-color: red;
+      }
     </style>
   </head>
   <body>
@@ -137,7 +172,9 @@
           <source src="G.mp3" type="audio/mpeg">
         </audio>
       </div>
-      <div class="controls"></div>
+      <div class="controls">
+        <a class="mute" href="#"></a>
+      </div>
     </div>
   </body>
 </html>
