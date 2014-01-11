@@ -23,16 +23,18 @@
           $('#board').css('height', length).css('width', length);
           $('.field, .controls').css('height', field_length).css('width', field_length);
           $('.controls').css('margin-top', position).css('margin-left', position);
-          $('.mute').css('height', button_length).css('width', button_length);
-          $('.mute').css('margin-top', button_position).css('margin-left', button_position);
+          $('.start, .mute').css('height', button_length).css('width', button_length);
+          $('.start, .mute').css('margin-top', button_position).css('margin-left', button_position);
         }
 
         // resize event
         $(window).on('resize', resize_board());
 
         $('audio').on('playing', function() {
+          console.log("playing");
           $(this).parent().toggleClass(field_toggle_class);
         }).on('ended', function() {
+          console.log("ended");
           $(this).parent().toggleClass(field_toggle_class);
         });
 
@@ -51,6 +53,49 @@
 
           return false;
         });
+
+        var sequence = new Array();
+        var fields = ['red','green','blue', 'yellow'];
+        var sounds = [new Audio('C.mp3'),new Audio('D.mp3'),new Audio('E.mp3'),new Audio('G.mp3')];
+        var i = -1;
+
+        function playSnd() {
+          i++;
+          if (i == sounds.length) return;
+          sounds[i].addEventListener('ended', playSnd);
+          $('.red').toggleClass(field_toggle_class);
+          sounds[i].play();
+          console.log(sounds[i].src);
+          $('.red').toggleClass(field_toggle_class);
+        }
+
+        function draw_field_and_trigger() {
+          var field = fields[Math.floor(Math.random() * fields.length)]
+          sequence.push(field);
+
+          for (var i = 0; i < sequence.length; i++) {
+            console.log(i + " - " + sequence[i]);
+            (function(index) {
+              setTimeout(function() { $("." + sequence[index]).trigger("click"); }, 1000);
+            })(i);
+            //playing = true;
+            $("." + sequence[i]).trigger("click");
+            //while(playing) { console.log("waiting"); }
+            //var obj = $("." + sequence[i]);
+            //setTimeout(function() { obj.trigger("click") }, 1000);
+            //$("." + sequence[i]).children[0].play();
+          }
+
+          console.log(" ");
+        }
+
+        $('.start').click(function() {
+          //draw_field_and_trigger();
+          playSnd();
+
+          return false;
+        });
+
       });
     </script>
     <style>
@@ -132,7 +177,7 @@
         left: 50%;
       }
 
-      .mute {
+      .start, .mute {
         background-color: lightgrey;
         border: 2px solid grey;
         border-radius: 100%;
@@ -142,15 +187,22 @@
         margin: -60px 0 0 -60px;
         position: absolute;
         top: 30%;
-        right: 15%;
+        right: 13%;
       }
 
       .muted {
         background-color: red;
       }
+
+      .start {
+        left: 30%;
+      }
     </style>
   </head>
   <body>
+    <audio id="sam">
+      <source src="C.mp3" type="audio/mpeg">
+    </audio>
     <div id="board">
       <div class="red field">
         <audio>
@@ -173,6 +225,7 @@
         </audio>
       </div>
       <div class="controls">
+        <a class="start" href="#"></a>
         <a class="mute" href="#"></a>
       </div>
     </div>
