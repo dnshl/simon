@@ -3,6 +3,7 @@
   <head>
     <title>Simon says</title>
     <script src="jquery-2.0.3.min.js"></script>
+    <script src="jquery.color-2.1.2.min.js"></script>
     <script>
       $(document).ready(function() {
 
@@ -96,6 +97,15 @@
           return false;
         });
 
+        $('.fail').click(function() {
+          var elements = $('body, .controls');
+          var bgcolor = elements.css('backgroundColor');
+
+          elements.css('background-color', 'red');
+          elements.animate({backgroundColor: bgcolor}, 1000);
+
+          return false;
+        });
       });
     </script>
     <style>
@@ -200,6 +210,7 @@
     </style>
   </head>
   <body>
+    <a class="fail" href="#">Fail</a>
     <audio id="sam">
       <source src="C.mp3" type="audio/mpeg">
     </audio>
