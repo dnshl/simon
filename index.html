@@ -11,6 +11,9 @@
         var muted_toggle_class = 'muted';
         var is_muted = false;
 
+        var sequence = new Array();
+        var sounds = [new Audio('C.mp3'),new Audio('D.mp3'),new Audio('E.mp3'),new Audio('G.mp3')];
+
         function resize_board() {
           var height = $(window).height();
           var width  = $(window).width ();
@@ -55,44 +58,44 @@
           return false;
         });
 
-        var sequence = new Array();
-        var fields = ['red','green','blue', 'yellow'];
-        var sounds = [new Audio('C.mp3'),new Audio('D.mp3'),new Audio('E.mp3'),new Audio('G.mp3')];
-        var i = -1;
+        var field;
 
-        function playSnd() {
-          i++;
-          if (i == sounds.length) return;
-          sounds[i].addEventListener('ended', playSnd);
-          $('.red').toggleClass(field_toggle_class);
-          sounds[i].play();
-          console.log(sounds[i].src);
-          $('.red').toggleClass(field_toggle_class);
+        function playSounds(foo) {
+          if (typeof field != 'undefined') { field.toggleClass(field_toggle_class); }
+          if (foo.length == 0) { return; }
+          var sound = foo.pop();
+          var tone = sound.src.substr(sound.src.lastIndexOf('/') + 1, 1);
+
+          if (tone == 'C') {
+            field = $('.red');
+          } else if (tone == 'D') {
+            field = $('.green');
+          } else if (tone == 'E') {
+            field = $('.blue');
+          } else {
+            field = $('.yellow');
+          }
+
+          sound.addEventListener('ended', playSounds(foo));
+          sound.play();
         }
 
         function draw_field_and_trigger() {
-          var field = fields[Math.floor(Math.random() * fields.length)]
-          sequence.push(field);
+          var field = sounds[Math.floor(Math.random() * sounds.length)]
+          console.log("sequence before:" + sequence);
+          var new_length = sequence.push(field);
+          console.log("sequence after:" + sequence + " - new length " + new_length);
 
-          for (var i = 0; i < sequence.length; i++) {
-            console.log(i + " - " + sequence[i]);
-            (function(index) {
-              setTimeout(function() { $("." + sequence[index]).trigger("click"); }, 1000);
-            })(i);
-            //playing = true;
-            $("." + sequence[i]).trigger("click");
-            //while(playing) { console.log("waiting"); }
-            //var obj = $("." + sequence[i]);
-            //setTimeout(function() { obj.trigger("click") }, 1000);
-            //$("." + sequence[i]).children[0].play();
-          }
+          console.log("- " + sequence.length);
+          var cloned_sequence = sequence.slice(0);
+          console.log("- " + cloned_sequence.length);
+          playSounds(cloned_sequence);
 
           console.log(" ");
         }
 
         $('.start').click(function() {
-          //draw_field_and_trigger();
-          playSnd();
+          draw_field_and_trigger();
 
           return false;
         });
